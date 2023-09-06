@@ -1,0 +1,27 @@
+body {
+  margin: 0;
+}
+
+.container {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  align-items: end;
+  gap: 2px;
+}
+
+.item {
+  box-sizing: border-box;
+  background-color: rgb(80, 170, 234);
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 0 0;
+  height: 100px;
+}
+
+.item_active {
+  background-color: rgb(38, 194, 35);
+}
