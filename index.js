@@ -1,13 +1,12 @@
 const container = document.querySelector(".container");
 const button = document.querySelector(".button");
+const select = document.querySelector("#algorithm");
 let isRunning = false;
 const array = [
   18, 56, 4, 31, 47, 6, 9, 25, 36, 2, 43, 8, 39, 14, 27, 51, 29, 22, 33, 40, 3,
   15, 45, 12, 38, 42, 10, 30, 7, 11, 34, 49, 13, 21, 44, 17, 28, 5, 48, 1, 35,
   50, 37, 16, 19, 46, 20, 26, 41, 32, 24,
 ];
-
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const renderArray = (array, container) => {
   array.forEach((num, index) => {
@@ -26,6 +25,8 @@ const createArrayColumn = (num, index) => {
 
   return column;
 };
+
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const exchangeColumns = (index1, index2) => {
   const column1 = document.getElementById(index1);
@@ -52,14 +53,169 @@ const lightDownColumn = (index) => {
   column.style.background = "rgb(80, 170, 234)";
 };
 
+const bubbleSort = async (array) => {
+    let change;
+    do {
+      change = false;
+      for (let i = 0; i < array.length - 1; i++) {
+        while (!isRunning) {
+          await delay(100);
+        }
+        lightUpColumn(i, "green");
+        lightUpColumn(i + 1, "green");
+        if (array[i] > array[i + 1]) {
+          [array[i], array[i + 1]] = [array[i + 1], array[i]];
+          change = true;
+          exchangeColumns(i, i + 1);
+        }
+        await delay(500);
+        lightDownColumn(i);
+        lightDownColumn(i + 1);
+      }
+    } while (change);
+};
+
+const combSort = async (array) => {
+  const factor = 1.247;
+  let gapFactor = array.length / factor;
+
+  while (gapFactor > 1) {
+    const gap = Math.round(gapFactor);
+    for (let i = 0, j = gap; j < array.length; i++, j++) {
+      lightUpColumn(i, "green");
+      lightUpColumn(j, "green");
+      if (array[i] > array[j]) {
+        [array[i], array[j]] = [array[j], array[i]];
+        exchangeColumns(i, j);
+        await delay(500);
+      }
+      lightDownColumn(i);
+      lightDownColumn(j);
+    }
+    gapFactor = gapFactor / factor;
+  }
+};
+
+const selectionSort = async (array) => {
+  let min;
+  for (let i = 0; i < array.length - 1; i++) {
+    while (!isRunning) {
+      await delay(100);
+    }
+    min = i;
+    lightUpColumn(min, "red");
+    for (let j = i + 1; j < array.length; j++) {
+      while (!isRunning) {
+        await delay(100);
+      }
+      lightUpColumn(j, "green");
+      await delay(200);
+      if (array[min] > array[j]) {
+        lightDownColumn(min);
+        min = j;
+        lightUpColumn(min, "red");
+      } else {
+        lightDownColumn(j);
+      }
+    }
+    [array[i], array[min]] = [array[min], array[i]];
+    exchangeColumns(i, min);
+    lightDownColumn(min);
+    lightUpColumn(i, "orange");
+  }
+  lightUpColumn(array.length - 1, "orange");
+};
+
+const insertionSort = async (array) => {
+  let cur, j;
+  for (let i = 0; i < array.length; i++) {
+    cur = array[i];
+    lightUpColumn(i, "red");
+    await delay(500);
+    lightUpColumn(i, "orange");
+    j = i - 1;
+    while (j >= 0 && array[j] > cur) {
+      lightUpColumn(j, "red");
+      [array[j + 1], array[j]] = [array[j], array[j + 1]];
+      exchangeColumns(j, j + 1);
+      await delay(500);
+      lightUpColumn(j, "orange");
+      j--;
+    }
+  }
+};
+
+const quickSort = (array) => {
+  if (array.length < 2) {
+    return array;
+  }
+
+  let pivotIndex = 0;
+  let pivot = array[0];
+  lightUpColumn(0, "orange");
+  const left = [];
+  const right = [];
+  for (let i = 1; i < array.length; i++) {
+    lightUpColumn(i, "green");
+    // await delay(1000);
+    if (pivot > array[i]) {
+      let j = i;
+      lightUpColumn(j, "red");
+      while (j !== pivotIndex) {
+        // await delay(1000);
+        exchangeColumns(j, j - 1);
+        if (j !== pivotIndex + 1) {
+          lightUpColumn(j, "violet");
+        }
+        j--;
+        lightUpColumn(j, "red");
+      }
+      pivotIndex = j + 1;
+      lightUpColumn(pivotIndex, "orange");
+      left.push(array[i]); 
+    } else {
+      lightUpColumn(i, "violet");
+      right.push(array[i]);
+      // await delay(1000);
+    }
+  }
+  return quickSort(left).concat(pivot, quickSort(right));
+}
+
+const getSortFunction = () => {
+  const value = select.value;
+  let func;
+
+  switch (value) {
+    case "quick":
+      func = quickSort;
+      break;
+    case "selection":
+      func = selectionSort;
+      break;
+    case "comb":
+      func = combSort;
+      break;
+    case "insertion":
+      func = insertionSort;
+      break;
+    default:
+      func = bubbleSort;
+  }
+
+  return func;
+};
+
 const handleStartClick = (() => {
   let firstCall = true;
+
   return () => {
+    const func = getSortFunction();
     isRunning = !isRunning;
 
     if (firstCall) {
       firstCall = false;
-      sortArrayByCombAlgorithm(array);
+      func(array);
     }
 
     if (isRunning) {

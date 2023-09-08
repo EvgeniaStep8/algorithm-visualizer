@@ -4,15 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./style.css" />
-    <script defer src="./index.js"></script>
+    <script defer type="module" src="./index.js"></script>
     <title>Визуализатор алгоритмов</title>
   </head>
   <body>
     <header>
-      <select name="algoritm" id="algoritm">
-        <option name="bubble">Сортировка пузырьком</option>
-        <option name="selection">Сортировка выбором</option>
-        <option name="selection">Сортировка расчёской</option>
+      <select name="algorithm" id="algorithm">
+        <option value="bubble">Сортировка пузырьком</option>
+        <option value="selection">Сортировка выбором</option>
+        <option value="comb">Сортировка расчёской</option>
+        <option value="insertion">Сортировка вставкой</option>
+        <option value="quick">Быстрая сортировка</option>
       </select>
       <button class="button">Старт</button>
     </header>
