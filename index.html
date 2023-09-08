@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./style.css" />
-    <script defer type="module" src="./index.js"></script>
+    <script defer src="./info.js"></script>
+    <script defer src="./index.js"></script>
     <title>Визуализатор алгоритмов</title>
   </head>
   <body>
@@ -17,7 +18,21 @@
         <option value="quick">Быстрая сортировка</option>
       </select>
       <button class="button">Старт</button>
+      <button class="mash-up">Перемешать</button>
     </header>
     <ul class="container"></ul>
+    <div class="more">
+      <p class="info">
+        Сортировка пузырьком или сортировка простыми обменами – один из
+        простейших алгоритмов сортировки. Он применяется для упорядочивания
+        массивов небольших размеров.Суть алгоритма в том, что совершается
+        несколько проходов по массиву. При каждом проходе попарно сравниваются
+        два соседних элемента. Если они находятся в верном порядке, то ничего не
+        происходит, в противном случае они меняются местами. В результате
+        первого прохода максимальный элемент окажется в конце, то есть всплывет
+        словно пузырек. Затем все повторяется до того момента пока весь массив
+        не будет отсортирован.
+      </p>
+    </div>
   </body>
 </html>
