@@ -27,36 +27,6 @@ const createArrayColumn = (num, index) => {
   return column;
 };
 
-const sortArrayBySelection = async (array) => {
-  let min;
-  for (let i = 0; i < array.length - 1; i++) {
-    while (!isRunning) {
-      await delay(100);
-    }
-    min = i;
-    lightUpColumn(min, "red");
-    for (let j = i + 1; j < array.length; j++) {
-      while (!isRunning) {
-        await delay(100);
-      }
-      lightUpColumn(j, "green");
-      await delay(200);
-      if (array[min] > array[j]) {
-        lightDownColumn(min);
-        min = j;
-        lightUpColumn(min, "red");
-      } else {
-        lightDownColumn(j);
-      }
-    }
-    [array[i], array[min]] = [array[min], array[i]];
-    exchangeColumns(i, min);
-    lightDownColumn(min);
-    lightUpColumn(i, "orange");
-  }
-  lightUpColumn(array.length - 1, "orange");
-};
-
 const exchangeColumns = (index1, index2) => {
   const column1 = document.getElementById(index1);
   const columnNum1 = +column1.textContent;
@@ -89,7 +59,7 @@ const handleStartClick = (() => {
 
     if (firstCall) {
       firstCall = false;
-      sortArrayBySelection(array);
+      sortArrayByCombAlgorithm(array);
     }
 
     if (isRunning) {
