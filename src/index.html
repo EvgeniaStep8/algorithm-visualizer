@@ -3,22 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./style.css" />
-    <script defer src="./info.js"></script>
-    <script defer src="./index.js"></script>
     <title>Визуализатор алгоритмов</title>
   </head>
   <body>
     <header>
       <select name="algorithm" id="algorithm">
-        <option value="bubble">Сортировка пузырьком</option>
+        <option value="bubble" selected>Сортировка пузырьком</option>
         <option value="selection">Сортировка выбором</option>
         <option value="comb">Сортировка расчёской</option>
         <option value="insertion">Сортировка вставкой</option>
         <option value="quick">Быстрая сортировка</option>
       </select>
+      <select name="speed" id="speed">
+        <option value="0.5">x0,5</option>
+        <option value="1" selected>x1</option>
+        <option value="1.5">x1,5</option>
+        <option value="2">x2</option>
+      </select>
       <button class="button">Старт</button>
       <button class="mash-up">Перемешать</button>
+      <button class="change-array">Изменить массив</button>
     </header>
     <ul class="container"></ul>
     <div class="more">
@@ -33,6 +37,29 @@
         словно пузырек. Затем все повторяется до того момента пока весь массив
         не будет отсортирован.
       </p>
+    </div>
+    <div class="popup">
+      <div class="popup-container">
+        <button class="close">+</button>
+        <form class="form">
+          <p class="text">Выберите длину массива</p>
+          <div class="range">
+            <input
+              class="input-range"
+              type="range"
+              name="range"
+              min="10"
+              max="1000"
+              value="100"
+              step="10"
+            />
+            <p class="length">100</p>
+          </div>
+          <p class="text">Или введите свои зачения для массива через запятую</p>
+          <input type="text" name="array" class="input" placeholder="1, 2, 5, ..., n" />
+          <button class="submit" type="submit">Сохранить</button>
+        </form>
+      </div>
     </div>
   </body>
 </html>

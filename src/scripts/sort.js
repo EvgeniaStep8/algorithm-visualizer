@@ -1,61 +1,11 @@
-const container = document.querySelector(".container");
-const button = document.querySelector(".button");
-const mashButton = document.querySelector(".mash-up");
-const select = document.querySelector("#algorithm");
-const description = document.querySelector(".info");
+import { delay, exchangeColumns, lightDownColumn, lightUpColumn, getSortFunction, getSortAlgorithmDescription } from "./helpers.js";
+import { info, selectSort, selectSpeed, button, baseDelayTime, container } from "./constants.js";
+import { description, initialArray } from "./constants.js";
+import { renderArray } from "./array.js";
+let array = initialArray;
 let isRunning = false;
 let newAlgorithm = false;
-const array = [
-  18, 56, 4, 31, 47, 6, 9, 25, 36, 2, 43, 8, 39, 14, 27, 51, 29, 22, 33, 40, 3,
-  15, 45, 12, 38, 42, 10, 30, 7, 11, 34, 49, 13, 21, 44, 17, 28, 5, 48, 1, 35,
-  50, 37, 16, 19, 46, 20, 26, 41, 32, 24,
-];
-
-const renderArray = (array, container) => {
-  container.innerHTML = "";
-  array.forEach((num, index) => {
-    const column = createArrayColumn(num, index);
-    container.append(column);
-  });
-};
-
-const createArrayColumn = (num, index) => {
-  const column = document.createElement("li");
-
-  column.id = index;
-  column.textContent = num;
-  column.classList.add("item");
-  column.style.height = `${num * 5}px`;
-
-  return column;
-};
-
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-const exchangeColumns = (index1, index2) => {
-  const column1 = document.getElementById(index1);
-  const columnNum1 = +column1.textContent;
-  const column2 = document.getElementById(index2);
-  const columnNum2 = +column2.textContent;
-
-  column1.textContent = columnNum2;
-  column1.style.height = `${columnNum2 * 5}px`;
-
-  column2.textContent = columnNum1;
-  column2.style.height = `${columnNum1 * 5}px`;
-};
-
-const lightUpColumn = (index, color) => {
-  const column = document.getElementById(index);
-
-  column.style.background = color;
-};
-
-const lightDownColumn = (index) => {
-  const column = document.getElementById(index);
-
-  column.style.background = "rgb(80, 170, 234)";
-};
+let delayTime = baseDelayTime;
 
 const bubbleSort = async (array) => {
   let change;
@@ -75,7 +25,7 @@ const bubbleSort = async (array) => {
         change = true;
         exchangeColumns(i, i + 1);
       }
-      await delay(500);
+      await delay(delayTime);
       lightDownColumn(i);
       lightDownColumn(i + 1);
     }
@@ -89,12 +39,18 @@ const combSort = async (array) => {
   while (gapFactor > 1) {
     const gap = Math.round(gapFactor);
     for (let i = 0, j = gap; j < array.length; i++, j++) {
+      if (newAlgorithm) {
+        return;
+      }
+      while (!isRunning) {
+        await delay(100);
+      }
       lightUpColumn(i, "green");
       lightUpColumn(j, "green");
       if (array[i] > array[j]) {
         [array[i], array[j]] = [array[j], array[i]];
         exchangeColumns(i, j);
-        await delay(500);
+        await delay(delayTime);
       }
       lightDownColumn(i);
       lightDownColumn(j);
@@ -106,6 +62,9 @@ const combSort = async (array) => {
 const selectionSort = async (array) => {
   let min;
   for (let i = 0; i < array.length - 1; i++) {
+    if (newAlgorithm) {
+      return;
+    }
     while (!isRunning) {
       await delay(100);
     }
@@ -113,10 +72,10 @@ const selectionSort = async (array) => {
     lightUpColumn(min, "red");
     for (let j = i + 1; j < array.length; j++) {
       while (!isRunning) {
-        await delay(100);
+        await delay(delayTime);
       }
       lightUpColumn(j, "green");
-      await delay(200);
+      await delay(delayTime);
       if (array[min] > array[j]) {
         lightDownColumn(min);
         min = j;
@@ -136,16 +95,22 @@ const selectionSort = async (array) => {
 const insertionSort = async (array) => {
   let cur, j;
   for (let i = 0; i < array.length; i++) {
+    if (newAlgorithm) {
+      return;
+    }
+    while (!isRunning) {
+      await delay(100);
+    }
     cur = array[i];
     lightUpColumn(i, "red");
-    await delay(500);
+    await delay(delayTime);
     lightUpColumn(i, "orange");
     j = i - 1;
     while (j >= 0 && array[j] > cur) {
       lightUpColumn(j, "red");
       [array[j + 1], array[j]] = [array[j], array[j + 1]];
       exchangeColumns(j, j + 1);
-      await delay(500);
+      await delay(delayTime);
       lightUpColumn(j, "orange");
       j--;
     }
@@ -167,13 +132,19 @@ const swap = async (array, start, end) => {
     let left = [];
     let right = [];
     for (let i = start + 1; i < end; i++) {
+      if (newAlgorithm) {
+        return;
+      }
+      while (!isRunning) {
+        await delay(100);
+      }
       lightUpColumn(i, "green");
-      await delay(100);
+      await delay(delayTime);
       if (pivot > array[i]) {
         let j = i;
         lightUpColumn(j, "red");
         while (j !== pivotIndex) {
-          await delay(100);
+          await delay(delayTime);
           exchangeColumns(j, j - 1);
           [array[j], array[j - 1]] = [array[j - 1], array[j]];
           if (j !== pivotIndex + 1) {
@@ -196,59 +167,11 @@ const swap = async (array, start, end) => {
   }
 };
 
-const getSortFunction = () => {
-  const value = select.value;
-  let func;
-
-  switch (value) {
-    case "quick":
-      func = quickSort;
-      break;
-    case "selection":
-      func = selectionSort;
-      break;
-    case "comb":
-      func = combSort;
-      break;
-    case "insertion":
-      func = insertionSort;
-      break;
-    default:
-      func = bubbleSort;
-  }
-
-  return func;
-};
-
-const getSordDescription = () => {
-  const value = select.value;
-  let description;
-
-  switch (value) {
-    case "quick":
-      description = info.quick;
-      break;
-    case "selection":
-      description = info.selection;
-      break;
-    case "comb":
-      description = info.comb;
-      break;
-    case "insertion":
-      description = info.insertion;
-      break;
-    default:
-      description = info.bubble;
-  }
-
-  return description;
-};
-
-const handleStartClick = (() => {
+const startSort = (() => {
   let firstCall = true;
 
   return () => {
-    const func = getSortFunction();
+    const func = getSortFunction(quickSort, selectionSort, combSort, insertionSort, bubbleSort, selectSort.value);
     isRunning = !isRunning;
 
     if (newAlgorithm) {
@@ -268,22 +191,28 @@ const handleStartClick = (() => {
   };
 })();
 
-renderArray(array, container);
-
-button.addEventListener("click", handleStartClick);
-select.addEventListener("change", () => {
-  description.textContent = getSordDescription();
+const changeSortAlgorithmDescription = () => {
+  description.textContent = getSortAlgorithmDescription(info, selectSort.value);
   if (isRunning) {
     newAlgorithm = true;
     button.textContent = "Старт";
     isRunning = false;
   }
-});
+};
 
-mashButton.addEventListener("click", () => {
-  for (let i = array.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
+const changeSpeedOfSort = () => {
+  const k = +selectSpeed.value;
+  delayTime = baseDelayTime / k;
+}
+
+const changeArrayForSort = (arr) => {
+  array = arr;
   renderArray(array, container);
-});
+}
+
+const changeArrayLength = (length) => {
+  array = array.slice(0, length);
+  renderArray(array, container);
+}
+
+export { startSort, changeSortAlgorithmDescription, changeSpeedOfSort, changeArrayForSort, changeArrayLength, array };
