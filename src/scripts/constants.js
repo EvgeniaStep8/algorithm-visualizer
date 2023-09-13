@@ -19,10 +19,11 @@ const description = document.querySelector(".info");
 const popup = document.querySelector(".popup");
 const changeArrayButton = document.querySelector(".change-array");
 const closePopupButton = popup.querySelector(".close");
-const form = document.querySelector(".form");
+const radiobuttonsForm = popup.querySelector(".radiobuttons");
+const form = popup.querySelector(".form");
 
 const baseDelayTime = 300;
 
-const initialArray = [29, 62, 12, 14, 34, 1, 53, 90, 31, 8, 38, 68, 89, 33, 32, 69, 69, 75, 36, 29, 23, 68, 62, 94, 21, 38, 70, 35, 8, 15, 90, 6, 37, 16, 42, 89, 17, 50, 98, 31, 5, 10, 44, 28, 39, 94, 14, 2, 28, 37, 54, 97, 56, 35, 32, 81, 20, 89, 18, 86, 78, 34, 100, 88, 25, 2, 38, 14, 86, 95, 32, 45, 7, 78, 84, 44, 18, 52, 24, 55, 39, 6, 42, 74, 65, 77, 39, 91, 71, 17, 83, 1, 18, 94, 21, 41, 75, 15, 42, 18].slice(0,30);
+const initialArray = [29, 62, 12, 14, 34, 1, 53, 90, 31, 8, 38, 68, 89, 33, 32, 69, 69, 75, 36, 29, 23, 68, 62, 94, 21, 38, 70, 35, 8, 15, 90, 6, 37, 16, 42, 89, 17, 50, 98, 31, 5, 10, 44, 28, 39, 94, 14, 2, 28, 37, 54, 97, 56, 35, 32, 81, 20, 89, 18, 86, 78, 34, 100, 88, 25, 2, 38, 14, 86, 95, 32, 45, 7, 78, 84, 44, 18, 52, 24, 55, 39, 6, 42, 74, 65, 77, 39, 91, 71, 17, 83, 1, 18, 94, 21, 41, 75, 15, 42, 18];
 
-export { info, container, button, mashButton, selectSort, selectSpeed, baseDelayTime, description, initialArray, popup, changeArrayButton, closePopupButton, form };
+export { info, container, button, mashButton, selectSort, selectSpeed, baseDelayTime, description, initialArray, popup, changeArrayButton, closePopupButton, radiobuttonsForm, form };

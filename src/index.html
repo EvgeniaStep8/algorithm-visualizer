@@ -41,25 +41,52 @@
     <div class="popup">
       <div class="popup-container">
         <button class="close">+</button>
-        <form class="form">
-          <p class="text">Выберите длину массива</p>
-          <div class="range">
+        <form class="radiobuttons">
+          <label class="radiobutton">
             <input
-              class="input-range"
-              type="range"
-              name="range"
-              min="10"
-              max="1000"
-              value="100"
-              step="10"
+              type="radio"
+              name="array"
+              class="radiobutton-input"
+              value="arrLength"
+              checked
             />
-            <p class="length">100</p>
-          </div>
-          <p class="text">Или введите свои зачения для массива через запятую</p>
-          <input type="text" name="array" class="input" placeholder="1, 2, 5, ..., n" />
+            <span class="visible-radio">Выбрать длину массива</span>
+          </label>
+          <label class="radiobutton">
+            <input type="radio" name="array" class="radiobutton-input" value="arrChange" />
+            <span class="visible-radio">Ввести свой массив</span>
+          </label>
+        </form>
+        <form class="form">
+          <div class="form-container"></div>
           <button class="submit" type="submit">Сохранить</button>
         </form>
       </div>
     </div>
+    <template id="template-length">
+      <label class="range">
+        <input
+          class="input-range"
+          type="range"
+          name="range"
+          min="10"
+          max="1000"
+          value="100"
+          step="10"
+        />
+        <p class="length">100</p>
+      </label>
+    </template>
+    <template id="template-array">
+      <div class="input-container">
+        <p class="text">Введите свои зачения для массива через запятую</p>
+        <input
+          type="text"
+          name="array"
+          class="input"
+          placeholder="1, 2, 5, ..., n"
+        />
+      </div>
+    </template>
   </body>
 </html>

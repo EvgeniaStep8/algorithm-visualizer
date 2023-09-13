@@ -211,6 +211,7 @@ const changeArrayForSort = (arr) => {
 }
 
 const changeArrayLength = (length) => {
+  array = initialArray;
   array = array.slice(0, length);
   renderArray(array, container);
 }

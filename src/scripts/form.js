@@ -1,29 +1,34 @@
 import { changeArrayForSort, changeArrayLength } from "./sort.js";
-import { form } from "./constants.js";
+import { radiobuttonsForm, form } from "./constants.js";
 import { closePopup } from "./popup.js";
+
+const renderForm = () => {
+  const formContainer = form.querySelector(".form-container");
+  formContainer.innerHTML= "";
+  if (radiobuttonsForm.array.value === "arrLength") {
+    const range = document.querySelector("#template-length").content.querySelector(".range").cloneNode(true);
+    range.addEventListener("change", () => {
+      document.querySelector(".length").textContent = form.range.value;
+    })
+    formContainer.append(range);
+  } else {
+    const newArr = document.querySelector("#template-array").content.querySelector(".input-container").cloneNode(true);
+    formContainer.append(newArr);
+  }
+}
 
 const handleChangeArray = (evt) => {
   evt.preventDefault();
-  if (form.array.value !== "") {
+  if (radiobuttonsForm.array.value === "arrLength") {
+    changeArrayLength(+form.range.value);
+  } else {
     const arr = form.array.value.split(", ").map((num) => +num);
     changeArrayForSort(arr);
-  } else {
-    changeArrayLength(+form.range.value);
   }
   closePopup();
 }
 
-const handleInputArrayChange = () => {
-  if (form.array.value !== "") {
-    form.range.disabled = true;
-  } else {
-    form.range.disabled = false;
-  }
-}
-
-form.array.addEventListener("change", handleInputArrayChange);
-form.range.addEventListener("change", () => {
-  document.querySelector(".length").textContent = form.range.value;
-})
+renderForm();
+radiobuttonsForm.addEventListener("change", renderForm);
 
 export { handleChangeArray };
