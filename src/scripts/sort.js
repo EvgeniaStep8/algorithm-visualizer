@@ -1,12 +1,19 @@
 import { delay, exchangeColumns, lightDownColumn, lightUpColumn, getSortFunction, getSortAlgorithmDescription } from "./helpers.js";
-import { info, selectSort, selectSpeed, button, baseDelayTime, container } from "./constants.js";
-import { description, initialArray } from "./constants.js";
-import { renderArray } from "./array.js";
-let array = initialArray;
+import { info, baseDelayTime, initialArray } from "./constants.js";
+import { renderArray, container, mashUpArray } from "./array.js";
+import { openPopup } from "./popup.js";
+
+let array = initialArray.slice(0, 100);
 let isRunning = false;
 let newAlgorithm = false;
 let delayTime = baseDelayTime;
 
+const button = document.querySelector(".button");
+const selectSort = document.querySelector("#algorithm");
+const selectSpeed = document.querySelector("#speed");
+const description = document.querySelector(".info");
+
+// визуализация сортировки массива пузырьком
 const bubbleSort = async (array) => {
   let change;
   do {
@@ -32,6 +39,7 @@ const bubbleSort = async (array) => {
   } while (change);
 };
 
+// визуализация сортировки массива расчёской
 const combSort = async (array) => {
   const factor = 1.247;
   let gapFactor = array.length / factor;
@@ -59,6 +67,7 @@ const combSort = async (array) => {
   }
 };
 
+// визуализация сортировки массива выбором
 const selectionSort = async (array) => {
   let min;
   for (let i = 0; i < array.length - 1; i++) {
@@ -92,6 +101,7 @@ const selectionSort = async (array) => {
   lightUpColumn(array.length - 1, "orange");
 };
 
+// визуализация сортировки массива перестановками
 const insertionSort = async (array) => {
   let cur, j;
   for (let i = 0; i < array.length; i++) {
@@ -117,6 +127,7 @@ const insertionSort = async (array) => {
   }
 };
 
+// визуализация быстрой сортировки массива с первым элементом массива в качестве опорного
 const quickSort = async (array) => {
   await swap(array, 0, array.length);
 };
@@ -167,6 +178,7 @@ const swap = async (array, start, end) => {
   }
 };
 
+// функция для запуска сортировки, учитывает выбранный в селекте метод сортировки
 const startSort = (() => {
   let firstCall = true;
 
@@ -176,6 +188,7 @@ const startSort = (() => {
 
     if (newAlgorithm) {
       firstCall = true;
+      newAlgorithm = false;
     }
 
     if (firstCall) {
@@ -191,6 +204,28 @@ const startSort = (() => {
   };
 })();
 
+// обработчик нажатия на кнопку перемешать
+const handleMashUp = () => {
+  if (isRunning) {
+    newAlgorithm = true;
+    isRunning = false;
+    button.textContent = "Старт"
+  }
+  mashUpArray(array);
+}
+
+// обработчик нажатия на кнопку изменить
+const handleChangeClick = () => {
+  if (isRunning) {
+    newAlgorithm = true;
+    isRunning = false;
+    button.textContent = "Старт"
+  }
+
+  openPopup();
+}
+
+// функция ищменения описания массива сортировки
 const changeSortAlgorithmDescription = () => {
   description.textContent = getSortAlgorithmDescription(info, selectSort.value);
   if (isRunning) {
@@ -200,20 +235,23 @@ const changeSortAlgorithmDescription = () => {
   }
 };
 
+// функция для изменения скорости сортировки
 const changeSpeedOfSort = () => {
   const k = +selectSpeed.value;
   delayTime = baseDelayTime / k;
 }
 
+// функция для изменения массива сортировки
 const changeArrayForSort = (arr) => {
   array = arr;
   renderArray(array, container);
 }
 
+// функция для изменения длины массива
 const changeArrayLength = (length) => {
   array = initialArray;
   array = array.slice(0, length);
   renderArray(array, container);
 }
 
-export { startSort, changeSortAlgorithmDescription, changeSpeedOfSort, changeArrayForSort, changeArrayLength, array };
+export { startSort, changeSortAlgorithmDescription, changeSpeedOfSort, changeArrayForSort, changeArrayLength, handleMashUp, handleChangeClick, selectSort, selectSpeed, button, array };

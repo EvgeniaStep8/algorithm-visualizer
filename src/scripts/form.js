@@ -1,7 +1,10 @@
 import { changeArrayForSort, changeArrayLength } from "./sort.js";
-import { radiobuttonsForm, form } from "./constants.js";
 import { closePopup } from "./popup.js";
 
+const radiobuttonsForm = document.querySelector(".radiobuttons");
+const form = document.querySelector(".form");
+
+// функция для отрисовки формы
 const renderForm = () => {
   const formContainer = form.querySelector(".form-container");
   formContainer.innerHTML= "";
@@ -17,6 +20,7 @@ const renderForm = () => {
   }
 }
 
+// обработчик изменения массива
 const handleChangeArray = (evt) => {
   evt.preventDefault();
   if (radiobuttonsForm.array.value === "arrLength") {
@@ -31,4 +35,4 @@ const handleChangeArray = (evt) => {
 renderForm();
 radiobuttonsForm.addEventListener("change", renderForm);
 
-export { handleChangeArray };
+export { handleChangeArray, form };

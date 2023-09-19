@@ -1,4 +1,6 @@
-import { popup } from "./constants.js";
+const popup = document.querySelector(".popup");
+
+// функции открытия и закрытия попапа
 
 const openPopup = () => {
   popup.classList.add("popup-visible");
